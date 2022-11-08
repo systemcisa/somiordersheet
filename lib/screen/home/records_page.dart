@@ -3,13 +3,14 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tomato/constants/common_size.dart';
-import 'package:tomato/data/item_model.dart';
-import 'package:tomato/repo/item_service.dart';
+import 'package:tomato/data/order_model.dart';
+import 'package:tomato/repo/order_service.dart';
 import 'package:tomato/repo/user_service.dart';
 import 'package:tomato/router/locations.dart';
+import 'package:tomato/widgets/order_list_widget.dart';
 
-class ItemsPage extends StatelessWidget {
-  const ItemsPage({Key? key}) : super(key: key);
+class OrdersPage extends StatelessWidget {
+  const OrdersPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +20,8 @@ class ItemsPage extends StatelessWidget {
             .of(context)
             .size;
         final imgSize = size.width / 4;
-        return FutureBuilder<List<ItemModel>>(
-            future: ItemService().getItems(),
+        return FutureBuilder<List<OrderModel>>(
+            future: OrderService().getOrders(),
             builder: (context, snapshot) {
               return AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
@@ -32,7 +33,7 @@ class ItemsPage extends StatelessWidget {
     );
   }
 
-  ListView _listView(double imgSize, List<ItemModel> items) {
+  ListView _listView(double imgSize, List<OrderModel> orders) {
     return ListView.separated(
         padding: EdgeInsets.all(common_padding),
         separatorBuilder: (BuildContext context, int index) {
@@ -45,30 +46,9 @@ class ItemsPage extends StatelessWidget {
           );
         },
         itemBuilder: (BuildContext context, int index) {
-          ItemModel item = items[index];
-          return InkWell(
-            onTap: (){
-              context.beamToNamed(
-                  '/$LOCATION_ITEM/${item.itemKey}'
-              );
-            },
-            child: SizedBox(
-              height: 50,
-              child: Row(
-                children: [
-                  ExtendedImage.network(items[index].imageDownloadUrls[0],
-                  shape:  BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(12),),
-                  Column(
-                    children: [Text('FLR32W'),Text('재고')],
-
-                  )
-                  //   TextButton.icon(onPressed: onPressed, icon: Icons.account_circle, label: )
-                ],
-              ),
-            ),
-          );
-        }, itemCount: items.length,
+          OrderModel order = orders[index];
+          return OrderListWidget(order, imgSize: imgSize);
+        }, itemCount: orders.length,
       );
   }
   Widget _shimmerListView(double imgSize) {

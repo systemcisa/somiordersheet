@@ -3,14 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:beamer/beamer.dart';
 import 'package:tomato/constants/common_size.dart';
-import 'package:tomato/data/item_model.dart';
+import 'package:tomato/data/order_model.dart';
 import 'package:tomato/router/locations.dart';
 import 'package:tomato/utils/logger.dart';
 
-class ItemListWidget extends StatelessWidget {
-  final ItemModel item;
+class OrderListWidget extends StatelessWidget {
+  final OrderModel order;
   double? imgSize;
-  ItemListWidget(this.item, {Key? key, this.imgSize}) : super(key: key);
+  OrderListWidget(this.order, {Key? key, this.imgSize}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +24,8 @@ class ItemListWidget extends StatelessWidget {
         BeamState beamState = Beamer.of(context).currentConfiguration!;
         String currentPath = beamState.uri.toString();
         String newPath = (currentPath == '/')
-            ? '/$LOCATION_ITEM/${item.itemKey}'
-            : '$currentPath/${item.itemKey}';
+            ? '/$LOCATION_ORDER/${order.orderKey}'
+            : '$currentPath/${order.orderKey}';
 
         logger.d('newPath - $newPath');
         context.beamToNamed(newPath);
@@ -38,7 +38,7 @@ class ItemListWidget extends StatelessWidget {
                 height: imgSize,
                 width: imgSize,
                 child: ExtendedImage.network(
-                  item.imageDownloadUrls[0],
+                  order.imageDownloadUrls[0],
                   fit: BoxFit.cover,
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(12),
@@ -51,14 +51,14 @@ class ItemListWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      item.title,
+                      order.title,
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
                     Text(
                       '53일전',
                       style: Theme.of(context).textTheme.subtitle2,
                     ),
-                    Text('${item.price.toString()}원'),
+                    Text('${order.price.toString()}원'),
                     Expanded(
                       child: Container(),
                     ),
