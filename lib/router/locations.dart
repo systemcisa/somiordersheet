@@ -5,15 +5,19 @@ import 'package:provider/provider.dart';
 import 'package:tomato/screen/home_screen.dart';
 import 'package:tomato/screen/input/category_input_screen.dart';
 import 'package:tomato/screen/input/input_screen.dart';
-import 'package:tomato/screen/item/item_detail.screen.dart';
+import 'package:tomato/screen/input/record_screen.dart';
+import 'package:tomato/screen/item/order_detail.screen.dart';
+import 'package:tomato/screen/item/record_detail.screen.dart';
 import 'package:tomato/states/category_notifier.dart';
 import 'package:tomato/states/select_image_notifier.dart';
 import 'package:tomato/utils/logger.dart';
 
 const LOCATION_HOME ='home';
 const LOCATION_INPUT ='input';
-const LOCATION_ITEM ='item';
-const LOCATION_ITEM_ID ='item_id';
+const LOCATION_ORDER ='order';
+const LOCATION_ORDER_ID ='order_id';
+const LOCATION_RECORD ='record';
+const LOCATION_RECORD_ID ='record_id';
 const LOCATION_CATEGORY_INPUT ='category_input';
 
 class HomeLocation extends BeamLocation{
@@ -44,6 +48,10 @@ class InputLocation extends BeamLocation{
       BeamPage(
         key: ValueKey(LOCATION_INPUT),
         child:InputScreen()),
+      if(state.pathBlueprintSegments.contains(LOCATION_RECORD))
+        BeamPage(
+            key: ValueKey(LOCATION_RECORD),
+            child:RecordScreen()),
       if(state.pathBlueprintSegments.contains(LOCATION_CATEGORY_INPUT))
         BeamPage(
             key: ValueKey(LOCATION_CATEGORY_INPUT),
@@ -52,7 +60,7 @@ class InputLocation extends BeamLocation{
   }
   @override
   // TODO: implement pathBlueprints
-  List get pathBlueprints => ['/$LOCATION_INPUT','/$LOCATION_INPUT/$LOCATION_CATEGORY_INPUT'];
+  List get pathBlueprints => ['/$LOCATION_INPUT','/$LOCATION_INPUT/$LOCATION_CATEGORY_INPUT','/$LOCATION_RECORD'];
 }
 class ItemLocation extends BeamLocation{
   @override
@@ -60,14 +68,18 @@ class ItemLocation extends BeamLocation{
     logger.d('path - ${state.uriBlueprint}\n${state.uri}');
     return [
       ...HomeLocation().buildPages(context, state),
-      if(state.pathParameters.containsKey(LOCATION_ITEM_ID))
+      if(state.pathParameters.containsKey(LOCATION_ORDER_ID))
         BeamPage(
-            key: ValueKey(LOCATION_ITEM_ID),
-            child:ItemDetailScreen(state.pathParameters[LOCATION_ITEM_ID]??"" )),
+            key: ValueKey(LOCATION_ORDER_ID),
+            child:OrderDetailScreen(state.pathParameters[LOCATION_ORDER_ID]??"" )),
+      if(state.pathParameters.containsKey(LOCATION_RECORD_ID))
+        BeamPage(
+            key: ValueKey(LOCATION_RECORD_ID),
+            child:RecordDetailScreen(state.pathParameters[LOCATION_RECORD_ID]??"" )),
     ];
   }
 
   @override
-  List get pathBlueprints =>  ['/$LOCATION_ITEM/:$LOCATION_ITEM_ID',];
+  List get pathBlueprints =>  ['/$LOCATION_ORDER/:$LOCATION_ORDER_ID','/$LOCATION_RECORD/:$LOCATION_RECORD_ID',];
 
 }

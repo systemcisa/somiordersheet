@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tomato/constants/data_keys.dart';
 
-class ItemModel {
-  late String itemKey;
+class OrderModel {
+  late String orderKey;
   late List<String> imageDownloadUrls;
   late String title;
   late String category;
@@ -12,7 +12,7 @@ class ItemModel {
   late String address;
   late DateTime createdDate;
 
-  ItemModel({required this.itemKey,
+  OrderModel({required this.orderKey,
 
     required this.imageDownloadUrls,
     required this.title,
@@ -21,9 +21,10 @@ class ItemModel {
     required this.negotiable,
     required this.detail,
     required this.address,
-    required this.createdDate,});
+    required this.createdDate,
+  });
 
-  ItemModel.fromJson(Map<String, dynamic> json, this.itemKey,) {
+  OrderModel.fromJson(Map<String, dynamic> json, this.orderKey,) {
     imageDownloadUrls = json[DOC_IMAGEDOWNLOADURLS] != null
         ? json[DOC_IMAGEDOWNLOADURLS].cast<String>()
         : [];
@@ -38,7 +39,7 @@ class ItemModel {
         : (json[DOC_CREATEDDATE] as Timestamp).toDate();
   }
 
-  ItemModel.fromAlgoliaObject(Map<String, dynamic> json, this.itemKey) {
+  OrderModel.fromAlgoliaObject(Map<String, dynamic> json, this.orderKey) {
     imageDownloadUrls = json[DOC_IMAGEDOWNLOADURLS] != null
         ? json[DOC_IMAGEDOWNLOADURLS].cast<String>()
         : [];
@@ -51,11 +52,11 @@ class ItemModel {
     createdDate = DateTime.now().toUtc();
   }
 
-  ItemModel.fromQuerySnapshot(
+  OrderModel.fromQuerySnapshot(
       QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
       : this.fromJson(snapshot.data(), snapshot.id);
 
-  ItemModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot)
+  OrderModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot)
       : this.fromJson(snapshot.data()!, snapshot.id);
 
   Map<String, dynamic> toJson() {

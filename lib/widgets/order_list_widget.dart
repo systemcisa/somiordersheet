@@ -2,13 +2,14 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:beamer/beamer.dart';
+import 'package:intl/intl.dart';
 import 'package:tomato/constants/common_size.dart';
 import 'package:tomato/data/order_model.dart';
 import 'package:tomato/router/locations.dart';
 import 'package:tomato/utils/logger.dart';
 
 class OrderListWidget extends StatelessWidget {
-  final RecordModel order;
+  final OrderModel order;
   double? imgSize;
   OrderListWidget(this.order, {Key? key, this.imgSize}) : super(key: key);
 
@@ -16,7 +17,7 @@ class OrderListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (imgSize == null) {
       Size size = MediaQuery.of(context).size;
-      imgSize = size.width / 4;
+      imgSize = size.width / 6;
     }
 
     return InkWell(
@@ -24,7 +25,7 @@ class OrderListWidget extends StatelessWidget {
         BeamState beamState = Beamer.of(context).currentConfiguration!;
         String currentPath = beamState.uri.toString();
         String newPath = (currentPath == '/')
-            ? '/$LOCATION_ITEM/${order.orderKey}'
+            ? '/$LOCATION_ORDER/${order.orderKey}'
             : '$currentPath/${order.orderKey}';
 
         logger.d('newPath - $newPath');
@@ -52,47 +53,22 @@ class OrderListWidget extends StatelessWidget {
                   children: [
                     Text(
                       order.title,
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                    Text(
-                      '53일전',
                       style: Theme.of(context).textTheme.subtitle2,
                     ),
-                    Text('${order.price.toString()}원'),
+                    Text(
+                      order.detail,
+                      maxLines:1,
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                    Text('${order.price.toString()},000원',style: Theme.of(context).textTheme.subtitle2),
+                    Text(
+                      DateFormat('MM-dd kkmm').format(order.createdDate),
+
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
                     Expanded(
                       child: Container(),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SizedBox(
-                          height: 14,
-                          child: FittedBox(
-                            fit: BoxFit.fitHeight,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  CupertinoIcons.chat_bubble_2,
-                                  color: Colors.grey,
-                                ),
-                                Text(
-                                  '23',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                Icon(
-                                  CupertinoIcons.heart,
-                                  color: Colors.grey,
-                                ),
-                                Text(
-                                  '30',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
                   ],
                 ))
           ],

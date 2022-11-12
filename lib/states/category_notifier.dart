@@ -25,24 +25,38 @@ class CategoryNotifier extends ChangeNotifier {
 }
 
 const Map<String, String> categoriesMapEngToKor = {
-  'none': '선택',
-  'jeans': '청바지',
-  'onepiece': '원피스',
-  'top': '상의',
-  'bottoms': '하의',
-  'jumper': '점퍼',
-  'shoes': '신발',
+  'none': '건물이름',
+  'THEOT': 'THEOT',
+  'NUZZONE': 'NUZZONE',
+  'APM': 'APM',
+  'SHOEA': '신발A',
+  'SHOEB': '신발B',
+  'SHOEC': '신발C',
+  'SHOED': '신발D',
+  'NPH': '남평화',
+  'DPH': '동평화',
+  'CPH': '청평화',
+  'TECHNO': '테크노',
+  'STUDIOW':'스튜디오W',
+  'DWP':'DWP',
 };
 
 //Map<String, String> categoriesMapKorToEng =
 //    categoriesMapEngToKor.map((key, value) => MapEntry(value, key));
 
 const Map<String, String> categoriesMapKorToEng = {
-  '선택':'none' ,
-  '청바지':'jeans' ,
-  '원피스':'onepiece' ,
-  '상의':'top',
-  '하의':'bottoms',
-  '점퍼':'jumper',
-  '신발':'shoes',
+  '건물이름':'none',
+  'THEOT':'THEOT',
+  'NUZZON':'NUZZON',
+  'APM':'APM',
+  '신발A':'SHOEA',
+  '신발B':'SHOEB',
+  '신발C':'SHOEC',
+  '신발D':'SHOED',
+  '남평화':'NPH',
+  '동평화':'DPH',
+  '청평화':'CPH',
+  '테크노':'TECHNO',
+  '스튜디오W':'STUDIOW',
+  'DWP':'DWP',
 };

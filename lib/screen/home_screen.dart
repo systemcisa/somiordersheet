@@ -1,8 +1,11 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tomato/screen/home/items_page.dart';
+import 'package:tomato/router/locations.dart';
+import 'package:tomato/screen/home/orders_page.dart';
+import 'package:tomato/screen/home/records_page.dart';
 import 'package:tomato/states/user_provider.dart';
+import 'package:tomato/widgets/expandable_fab.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -20,21 +23,36 @@ class _HomeScreenState extends State<HomeScreen> {
       body: IndexedStack(
         index: _bottomSelectedIndex,
         children: [
-          ItemsPage(),
-          Container(color: Colors.accents[3],),
+          OrdersPage(),
+          RecordsPage(),
           Container(color: Colors.accents[6],)
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.plus_one_outlined),
-        onPressed: () {
-          context.beamToNamed('/input');
-
-      },
-
+      floatingActionButton: ExpandableFab(
+        distance: 90,
+        children: [
+          MaterialButton(
+            onPressed: () {
+              context.beamToNamed('/$LOCATION_INPUT');
+            },
+            shape: CircleBorder(),
+            height: 40,
+            color: Theme.of(context).colorScheme.primary,
+            child: Icon(Icons.add),
+          ),
+          MaterialButton(
+            onPressed: () {
+              context.beamToNamed('/$LOCATION_RECORD');
+            },
+            shape: CircleBorder(),
+            height: 40,
+            color: Theme.of(context).colorScheme.primary,
+            child: Icon(Icons.add),
+          ),
+        ],
       ),
       appBar: AppBar(
-        title: Text('재고 관리', style: Theme.of(context).appBarTheme.titleTextStyle,),
+        title: Text('SOMI MALL', style: Theme.of(context).appBarTheme.titleTextStyle,),
         actions: [
 
         IconButton(onPressed: (){

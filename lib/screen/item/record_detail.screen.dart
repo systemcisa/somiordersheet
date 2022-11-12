@@ -3,22 +3,21 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:provider/provider.dart';
 import 'package:tomato/constants/common_size.dart';
 import 'package:tomato/data/order_model.dart';
-import 'package:tomato/repo/order_service.dart';
-import 'package:tomato/states/category_notifier.dart';
-import 'package:tomato/utils/time_calculation.dart';
+import 'package:tomato/data/record_model.dart';
+import 'package:tomato/repo/record_service.dart';
 
-class OrderDetailScreen extends StatefulWidget {
-  final String orderKey;
-  const OrderDetailScreen(this.orderKey, {Key? key}) : super(key: key);
+
+class RecordDetailScreen extends StatefulWidget {
+  final String recordKey;
+  const RecordDetailScreen(this.recordKey, {Key? key}) : super(key: key);
 
   @override
-  _OrderDetailScreenState createState() => _OrderDetailScreenState();
+  _RecordDetailScreenState createState() => _RecordDetailScreenState();
 }
 
-class _OrderDetailScreenState extends State<OrderDetailScreen> {
+class _RecordDetailScreenState extends State<RecordDetailScreen> {
   bool _dealComplete = false;
   PageController _pageController = PageController();
   ScrollController _scrollController = ScrollController();
@@ -62,11 +61,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<OrderModel>(
-        future: OrderService().getOrder(widget.orderKey),
+    return FutureBuilder<RecordModel>(
+        future: RecordService().getRecord(widget.recordKey),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            OrderModel orderModel = snapshot.data!;
+            RecordModel recordModel = snapshot.data!;
             return LayoutBuilder(
               builder: (context, constraints) {
                 _size = MediaQuery.of(context).size;
@@ -133,30 +132,30 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       body: CustomScrollView(
                         controller: _scrollController,
                         slivers: [
-                          _imagesAppBar(orderModel),
+                         // _imagesAppBar(recordModel),
                           SliverPadding(
                             padding: EdgeInsets.all(common_padding),
                             sliver: SliverList(
                                 delegate: SliverChildListDelegate([
                                   _divider,
                                   Text(
-                                    orderModel.title,
+                                    recordModel.title,
                                     style: Theme.of(context).textTheme.headline6,
                                   ),
                                   _textGap,
                                   Text(
-                                    '${orderModel.price.toString()},000원',
+                                    '${recordModel.price.toString()},000원',
                                     style: Theme.of(context).textTheme.bodyText1,
                                   ),
                                   _textGap,
                                   Row(
                                     children: [
                                       Text(
-                                  orderModel.address,
+                                  recordModel.address,
                                       ),
                                       Text(
                                 //        ' · ${TimeCalculation.getTimeDiff(orderModel.createdDate)}',
-                                        ' · ${DateFormat('MM-dd KKmm').format(orderModel.createdDate)}',
+                                        ' · ${DateFormat('MM-dd KKmm').format(recordModel.createdDate)}',
                                         style:
                                         Theme.of(context).textTheme.bodyText2,
                                       ),
@@ -172,7 +171,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                   ),
                                   _textGap,
                                   Text(
-                                    orderModel.detail,
+                                    recordModel.detail,
                                     style: Theme.of(context).textTheme.bodyText1,
                                   ),
                                   _textGap,
@@ -280,37 +279,37 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         });
   }
 
-  SliverAppBar _imagesAppBar(OrderModel orderModel) {
-    return SliverAppBar(
-      expandedHeight: _size!.width,
-      pinned: true,
-      flexibleSpace: FlexibleSpaceBar(
-        title: SizedBox(
-          child: SmoothPageIndicator(
-              controller: _pageController, // PageController
-              count: orderModel.imageDownloadUrls.length,
-              effect: WormEffect(
-                  dotColor: Colors.white24,
-                  activeDotColor: Colors.white,
-                  radius: 2,
-                  dotHeight: 4,
-                  dotWidth: 4), // yo// ur preferred effect
-              onDotClicked: (index) {}),
-        ),
-        centerTitle: true,
-        background: PageView.builder(
-          controller: _pageController,
-          allowImplicitScrolling: true,
-          itemBuilder: (context, index) {
-            return ExtendedImage.network(
-              orderModel.imageDownloadUrls[index],
-              fit: BoxFit.cover,
-              scale: 0.1,
-            );
-          },
-          itemCount: orderModel.imageDownloadUrls.length,
-        ),
-      ),
-    );
-  }
+ // SliverAppBar _imagesAppBar(RecordModel recordModel) {
+ //    return SliverAppBar(
+ //      expandedHeight: _size!.width,
+ //      pinned: true,
+ //      flexibleSpace: FlexibleSpaceBar(
+ //        title: SizedBox(
+ //          child: SmoothPageIndicator(
+ //              controller: _pageController, // PageController
+ //              count: recordModel.imageDownloadUrls.length,
+ //              effect: WormEffect(
+ //                  dotColor: Colors.white24,
+ //                  activeDotColor: Colors.white,
+ //                  radius: 2,
+ //                  dotHeight: 4,
+ //                  dotWidth: 4), // yo// ur preferred effect
+ //              onDotClicked: (index) {}),
+ //        ),
+ //        centerTitle: true,
+ //        background: PageView.builder(
+ //          controller: _pageController,
+ //          allowImplicitScrolling: true,
+ //          itemBuilder: (context, index) {
+ //            return ExtendedImage.network(
+ //              recordModel.imageDownloadUrls[index],
+ //              fit: BoxFit.cover,
+ //              scale: 0.1,
+ //            );
+ //          },
+ //          itemCount: recordModel.imageDownloadUrls.length,
+ //        ),
+ //      ),
+ //    );
+ //  }
 }

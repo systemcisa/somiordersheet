@@ -1,16 +1,12 @@
-import 'package:beamer/beamer.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tomato/constants/common_size.dart';
 import 'package:tomato/data/order_model.dart';
-import 'package:tomato/repo/item_service.dart';
-import 'package:tomato/repo/user_service.dart';
-import 'package:tomato/router/locations.dart';
-import 'package:tomato/widgets/item_list_widget.dart';
+import 'package:tomato/repo/order_service.dart';
+import 'package:tomato/widgets/order_list_widget.dart';
 
-class ItemsPage extends StatelessWidget {
-  const ItemsPage({Key? key}) : super(key: key);
+class OrdersPage extends StatelessWidget {
+  const OrdersPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +15,7 @@ class ItemsPage extends StatelessWidget {
         Size size = MediaQuery
             .of(context)
             .size;
-        final imgSize = size.width / 4;
+        final imgSize = size.width / 5.5;
         return FutureBuilder<List<OrderModel>>(
             future: OrderService().getOrders(),
             builder: (context, snapshot) {
@@ -33,7 +29,7 @@ class ItemsPage extends StatelessWidget {
     );
   }
 
-  ListView _listView(double imgSize, List<OrderModel> items) {
+  ListView _listView(double imgSize, List<OrderModel> orders) {
     return ListView.separated(
         padding: EdgeInsets.all(common_padding),
         separatorBuilder: (BuildContext context, int index) {
@@ -46,9 +42,9 @@ class ItemsPage extends StatelessWidget {
           );
         },
         itemBuilder: (BuildContext context, int index) {
-          OrderModel item = items[index];
-          return OrderListWidget(item, imgSize: imgSize);
-        }, itemCount: items.length,
+          OrderModel order = orders[index];
+          return OrderListWidget(order, imgSize: imgSize);
+        }, itemCount: orders.length,
       );
   }
   Widget _shimmerListView(double imgSize) {

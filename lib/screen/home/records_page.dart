@@ -1,16 +1,12 @@
-import 'package:beamer/beamer.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:tomato/constants/common_size.dart';
-import 'package:tomato/data/order_model.dart';
-import 'package:tomato/repo/order_service.dart';
-import 'package:tomato/repo/user_service.dart';
-import 'package:tomato/router/locations.dart';
-import 'package:tomato/widgets/order_list_widget.dart';
+import 'package:tomato/data/record_model.dart';
+import 'package:tomato/repo/record_service.dart';
+import 'package:tomato/widgets/record_list_widget.dart';
 
-class OrdersPage extends StatelessWidget {
-  const OrdersPage({Key? key}) : super(key: key);
+class RecordsPage extends StatelessWidget {
+  const RecordsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,20 +16,21 @@ class OrdersPage extends StatelessWidget {
             .of(context)
             .size;
         final imgSize = size.width / 4;
-        return FutureBuilder<List<OrderModel>>(
-            future: OrderService().getOrders(),
+        return FutureBuilder<List<RecordModel>>(
+            future: RecordService().getRecords(),
             builder: (context, snapshot) {
               return AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
-                  child: (snapshot.hasData && snapshot.data!.isNotEmpty)
-                      ? _listView(imgSize, snapshot.data!)
-                      : _shimmerListView(imgSize));
+              child: _listView2(imgSize, snapshot.data!));
+                  // child: (snapshot.hasData && snapshot.data!.isNotEmpty)
+                  //     ? _listView(imgSize, snapshot.data!)
+                  //     : _shimmerListView(imgSize));
             });
       },
     );
   }
 
-  ListView _listView(double imgSize, List<OrderModel> orders) {
+  ListView _listView2(double imgSize, List<RecordModel> records) {
     return ListView.separated(
         padding: EdgeInsets.all(common_padding),
         separatorBuilder: (BuildContext context, int index) {
@@ -46,9 +43,9 @@ class OrdersPage extends StatelessWidget {
           );
         },
         itemBuilder: (BuildContext context, int index) {
-          OrderModel order = orders[index];
-          return OrderListWidget(order, imgSize: imgSize);
-        }, itemCount: orders.length,
+          RecordModel record = records[index];
+          return RecordListWidget(record, imgSize: imgSize);
+        }, itemCount: records.length,
       );
   }
   Widget _shimmerListView(double imgSize) {

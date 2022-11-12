@@ -16,7 +16,7 @@ class OrderService{
       await documentReference.set(json);
     }
   }
-  Future<OrderModel> getItem(String orderKey) async{
+  Future<OrderModel> getOrder(String orderKey) async{
     DocumentReference<Map<String, dynamic>> documentReference =
         FirebaseFirestore.instance.collection(COL_ORDERS).doc(orderKey);
     final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
@@ -26,8 +26,8 @@ class OrderService{
   }
   Future<List<OrderModel>> getOrders() async{
     CollectionReference<Map<String, dynamic>> collectionReference = FirebaseFirestore.instance.collection(COL_ORDERS);
-    QuerySnapshot<Map<String, dynamic>> snapshot = await collectionReference.get();
-    
+    QuerySnapshot<Map<String, dynamic>> snapshot = await collectionReference.orderBy("createdDate",descending: true).get();
+
     List<OrderModel> orders=[];
     
     for(int i=0; i< snapshot.size; i++){
@@ -37,3 +37,5 @@ class OrderService{
     return orders;
   }
 }
+
+//    .orderBy("createdDate","desc")

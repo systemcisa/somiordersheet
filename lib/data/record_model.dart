@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tomato/constants/data_keys.dart';
 
-class OrderModel {
-  late String orderKey;
+class RecordModel {
+  late String recordKey;
   late List<String> imageDownloadUrls;
   late String title;
   late String category;
@@ -12,7 +12,7 @@ class OrderModel {
   late String address;
   late DateTime createdDate;
 
-  OrderModel({required this.orderKey,
+  RecordModel({required this.recordKey,
 
     required this.imageDownloadUrls,
     required this.title,
@@ -23,10 +23,7 @@ class OrderModel {
     required this.address,
     required this.createdDate,});
 
-  OrderModel.fromJson(Map<String, dynamic> json, this.orderKey,) {
-    imageDownloadUrls = json[DOC_IMAGEDOWNLOADURLS] != null
-        ? json[DOC_IMAGEDOWNLOADURLS].cast<String>()
-        : [];
+  RecordModel.fromJson(Map<String, dynamic> json, this.recordKey,) {
     title = json[DOC_TITLE] ?? "";
     category = json[DOC_CATEGORY] ?? "none";
     price = json[DOC_PRICE] ?? 0;
@@ -38,10 +35,7 @@ class OrderModel {
         : (json[DOC_CREATEDDATE] as Timestamp).toDate();
   }
 
-  OrderModel.fromAlgoliaObject(Map<String, dynamic> json, this.orderKey) {
-    imageDownloadUrls = json[DOC_IMAGEDOWNLOADURLS] != null
-        ? json[DOC_IMAGEDOWNLOADURLS].cast<String>()
-        : [];
+  RecordModel.fromAlgoliaObject(Map<String, dynamic> json, this.recordKey) {
     title = json[DOC_TITLE] ?? "";
     category = json[DOC_CATEGORY] ?? "none";
     price = json[DOC_PRICE] ?? 0;
@@ -51,16 +45,15 @@ class OrderModel {
     createdDate = DateTime.now().toUtc();
   }
 
-  OrderModel.fromQuerySnapshot(
+  RecordModel.fromQuerySnapshot(
       QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
       : this.fromJson(snapshot.data(), snapshot.id);
 
-  OrderModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot)
+  RecordModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot)
       : this.fromJson(snapshot.data()!, snapshot.id);
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    map[DOC_IMAGEDOWNLOADURLS] = imageDownloadUrls;
     map[DOC_TITLE] = title;
     map[DOC_CATEGORY] = category;
     map[DOC_PRICE] = price;
@@ -73,7 +66,6 @@ class OrderModel {
 
   Map<String, dynamic> toMinJson() {
     var map = <String, dynamic>{};
-    map[DOC_IMAGEDOWNLOADURLS] = imageDownloadUrls.sublist(0, 1);
     map[DOC_TITLE] = title;
     map[DOC_PRICE] = price;
     return map;

@@ -1,39 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tomato/constants/data_keys.dart';
-import 'package:tomato/data/order_model.dart';
+import 'package:tomato/data/record_model.dart';
 
-class OrderService{
-  static final OrderService _orderService = OrderService._internal();
-  factory OrderService() => _orderService;
-  OrderService._internal();
+class RecordService{
+  static final RecordService _recordService = RecordService._internal();
+  factory RecordService() => _recordService;
+  RecordService._internal();
 
-  Future createNewOrder(Map<String, dynamic> json, String orderKey) async{
+  Future createNewRecord(Map<String, dynamic> json, String recordKey) async{
     DocumentReference<Map<String, dynamic>> documentReference =
-        FirebaseFirestore.instance.collection(COL_ORDERS).doc(orderKey);
+        FirebaseFirestore.instance.collection(COL_RECORDS).doc(recordKey);
     final DocumentSnapshot documentSnapshot = await documentReference.get();
 
     if(!documentSnapshot.exists){
       await documentReference.set(json);
     }
   }
-  Future<OrderModel> getOrder(String orderKey) async{
+  Future<RecordModel> getRecord(String recordKey) async{
     DocumentReference<Map<String, dynamic>> documentReference =
-        FirebaseFirestore.instance.collection(COL_ORDERS).doc(orderKey);
+        FirebaseFirestore.instance.collection(COL_RECORDS).doc(recordKey);
     final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await documentReference.get();
-    OrderModel orderModel = OrderModel.fromSnapshot(documentSnapshot);
-    return orderModel;
+    RecordModel recordModel = RecordModel.fromSnapshot(documentSnapshot);
+    return recordModel;
   }
-  Future<List<OrderModel>> getOrders() async{
+  Future<List<RecordModel>> getRecords() async{
     CollectionReference<Map<String, dynamic>> collectionReference = FirebaseFirestore.instance.collection(COL_ORDERS);
-    QuerySnapshot<Map<String, dynamic>> snapshot = await collectionReference.get();
+    QuerySnapshot<Map<String, dynamic>> snapshot = await collectionReference.orderBy("createDate", descending: true).get();
     
-    List<OrderModel> orders=[];
+    List<RecordModel> records=[];
     
     for(int i=0; i< snapshot.size; i++){
-      OrderModel orderModel = OrderModel.fromQuerySnapshot(snapshot.docs[i]);
-      orders.add(orderModel);
+      RecordModel recordModel = RecordModel.fromQuerySnapshot(snapshot.docs[i]);
+      records.add(recordModel);
     }
-    return orders;
+    return records;
   }
 }
